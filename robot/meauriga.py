@@ -99,14 +99,14 @@ class MeAuriga():
         while True:
             if(self.exiting==True):
                 break
-            try:	
+            try:    
                 if self.device.isOpen()==True:
                     n = self.device.inWaiting()
                     for i in range(n):
                         r = ord(self.device.read())
                         callback(r)
                     sleep(0.01)
-                else:	
+                else:   
                     sleep(0.5)
             except Exception as ex:
                 print(str(ex))
@@ -124,7 +124,7 @@ class MeAuriga():
         self.__writeRequestPackage(0x1e,pin,callback)
 
     def analogRead(self,pin,callback):
-        self.__writeRequestPackage(0x1f,pin,callback)	
+        self.__writeRequestPackage(0x1f,pin,callback)   
 
     def doBuzzer(self, buzzer, time=0):
         self.__writePackage(
@@ -187,9 +187,9 @@ class MeAuriga():
     def gyroRead(self,axis,callback):
         self.__writeRequestPackage(6,axis,callback)
 #
-#	def pressureSensorBegin(self):
+#   def pressureSensorBegin(self):
 #        self.__writePackage(bytearray([0xff,0x55,0x3,0x0,0x2,29]))
-		
+        
     def pressureSensorRead(self,type,callback):
         self.__writeRequestPackage(29,type,callback)
 
@@ -261,7 +261,7 @@ class MeAuriga():
         for i in range(len(arr)):
             arr[i] = ord(arr[i])
         self.__writePackage(bytearray([0xff,0x55,8+len(arr),0,0x2,41,port,1,self.char2byte(x),self.char2byte(7-y),len(arr)]+arr))
-		
+        
     def ledMatrixDisplay(self,port,x,y,buffer):
         self.__writePackage(bytearray([0xff,0x55,7+len(buffer),0,0x2,41,port,2,x,7-y]+buffer))
 
@@ -279,14 +279,14 @@ class MeAuriga():
 
     def onParse(self, byte):
         position = 0
-        value = 0	
+        value = 0   
         self.buffer+=[byte]
         bufferLength = len(self.buffer)
         if bufferLength >= 2:
             if (self.buffer[bufferLength-1]==0x55 and self.buffer[bufferLength-2]==0xff):
                 self.isParseStart = True
-                self.isParseStartIndex = bufferLength-2	
-            if (self.buffer[bufferLength-1]==0xa and self.buffer[bufferLength-2]==0xd and self.isParseStart==True):			
+                self.isParseStartIndex = bufferLength-2 
+            if (self.buffer[bufferLength-1]==0xa and self.buffer[bufferLength-2]==0xd and self.isParseStart==True):         
                 self.isParseStart = False
                 position = self.isParseStartIndex+2
                 extID = self.buffer[position]
@@ -345,7 +345,7 @@ class MeAuriga():
 
     def long2bytes(self,lval):
         val = struct.pack("=l",lval)
-        return [val[0],val[1],val[2]),val[3]]
+        return [val[0],val[1],val[2],val[3]]
 
     def short2bytes(self,sval):
         val = struct.pack("h",sval)
