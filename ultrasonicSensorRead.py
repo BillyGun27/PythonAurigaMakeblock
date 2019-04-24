@@ -5,7 +5,8 @@ def onRead(v):
 
 if __name__ == '__main__':
 	bot = MeAuriga()
-	bot.start("/dev/ttyUSB0")
+	#bot.start("/dev/ttyUSB0")
+	bot.startWithSerial("/dev/rfcomm0")
 	while 1:
 		sleep(0.1)
 		bot.ultrasonicSensorRead(9,onRead)
