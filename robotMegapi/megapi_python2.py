@@ -9,7 +9,7 @@ import threading
 class mSerial():
     ser = None
     def __init__(self):
-        print(self)
+        print self
 
     def start(self, port='/dev/ttyAMA0'):
         self.ser = serial.Serial(port,115200,timeout=10)
@@ -63,9 +63,9 @@ A9 = 22
 A10 = 23
 A11 = 24
 
-class MeAuriga():
+class MegaPi():
     def __init__(self):
-        print("init MeAuriga")
+        print "init MegaPi"
         signal.signal(signal.SIGINT, self.exit)
         self.manager = Manager()
         self.__selectors = self.manager.dict()
@@ -108,8 +108,8 @@ class MeAuriga():
                     sleep(0.01)
                 else:	
                     sleep(0.5)
-            except Exception as ex:
-                print(str(ex))
+            except Exception,ex:
+                print str(ex)
                 self.close()
                 sleep(1)
     def __writePackage(self,pack):
@@ -125,10 +125,6 @@ class MeAuriga():
 
     def analogRead(self,pin,callback):
         self.__writeRequestPackage(0x1f,pin,callback)	
-
-    def doBuzzer(self, buzzer, time=0):
-        self.__writePackage(
-            bytearray([0xff, 0x55, 0x7, 0x0, 0x2, 0x22] + self.short2bytes(buzzer) + self.short2bytes(time)))
 
     def lightSensorRead(self,port,callback):
         self.__writeRequestPackage(4,port,callback)
@@ -158,13 +154,13 @@ class MeAuriga():
         self.__writeRequestPackage(15,port,callback)
 
     def humitureSensorRead(self,port,type,callback):
-        deviceId = 23
+        deviceId = 23;
         extId = ((port<<4)+deviceId)&0xff
         self.__doCallback(extId,callback)
         self.__writePackage(bytearray([0xff,0x55,0x5,extId,0x1,deviceId,port,type]))
 
     def joystickRead(self,port,axis,callback):
-        deviceId = 5
+        deviceId = 5;
         extId = (((port+axis)<<4)+deviceId)&0xff
         self.__doCallback(extId,callback)
         self.__writePackage(bytearray([0xff,0x55,0x5,extId,0x1,deviceId,port,axis]))
@@ -184,11 +180,14 @@ class MeAuriga():
     def buttonRead(self,port,callback):
         self.__writeRequestPackage(22,port,callback)
 
-    def gyroRead(self,axis,callback):
-        self.__writeRequestPackage(6,axis,callback)
-#
-#	def pressureSensorBegin(self):
-#        self.__writePackage(bytearray([0xff,0x55,0x3,0x0,0x2,29]))
+    def gyroRead(self,port,axis,callback):
+        deviceId = 6;
+        extId = (((port+axis)<<4)+deviceId)&0xff
+        self.__doCallback(extId,callback)
+        self.__writePackage(bytearray([0xff,0x55,0x5,extId,0x1,deviceId,port,axis]))
+
+    def pressureSensorBegin(self):
+        self.__writePackage(bytearray([0xff,0x55,0x3,0x0,0x2,29]))
 		
     def pressureSensorRead(self,type,callback):
         self.__writeRequestPackage(29,type,callback)
@@ -209,57 +208,70 @@ class MeAuriga():
         self.__writePackage(bytearray([0xff,0x55,0x6,0x0,0x2,0xb,port,slot,angle]))
 
     def encoderMotorRun(self,slot,speed):
-        deviceId = 61
-        self.__writePackage(bytearray([0xff,0x55,0x8,0,0x2,deviceId,0,slot,1]+self.short2bytes(speed)))
+        deviceId = 62;
+        self.__writePackage(bytearray([0xff,0x55,0x07,0x00,0x02,deviceId,0x02,slot]+self.short2bytes(speed)))
 
     def encoderMotorMove(self,slot,speed,distance,callback):
-        deviceId = 61
+        deviceId = 62;
         extId = ((slot<<4)+deviceId)&0xff
         self.__doCallback(extId,callback)
-        self.__writePackage(bytearray([0xff,0x55,12,extId,0x2,deviceId,0,slot,2]+self.short2bytes(speed)+self.long2bytes(distance)))
-
-    def encoderMotorMoveTo(self,slot,speed,position,callback):
-        deviceId = 61
+        self.__writePackage(bytearray([0xff,0x55,0x0b,extId,0x02,deviceId,0x01,slot]+self.long2bytes(distance)+self.short2bytes(speed)))
+    
+    def encoderMotorMoveTo(self,slot,speed,distance,callback):
+        deviceId = 62;
         extId = ((slot<<4)+deviceId)&0xff
         self.__doCallback(extId,callback)
-        self.__writePackage(bytearray([0xff,0x55,12,extId,0x2,deviceId,0,slot,3]+self.short2bytes(speed)+self.long2bytes(position)))
+        self.__writePackage(bytearray([0xff,0x55,0x0b,extId,0x02,deviceId,0x06,slot]+self.long2bytes(distance)+self.short2bytes(speed)))
 
+    def encoderMotorSetCurPosZero(self,slot):
+        deviceId = 62;
+        self.__writePackage(bytearray([0xff,0x55,0x05,0x00,0x02,deviceId,0x04,slot]))
 
     def encoderMotorPosition(self,slot,callback):
-        self.__writeRequestPackage(61,slot,1,callback)
+        deviceId = 61;
+        extId = ((slot<<4)+deviceId)&0xff
+        self.__doCallback(extId,callback)
+        self.__writePackage(bytearray([0xff,0x55,0x06,extId,0x01,deviceId,0x00,slot,0x01]))
 
     def encoderMotorSpeed(self,slot,callback):
-        self.__writeRequestPackage(61,slot,2,callback)
-
-    def stepperMotorRun(self,port,speed):
-        self.__writePackage(bytearray([0xff,0x55,0x7,0,0x2,62,port,0x1]+self.short2bytes(speed)))
-
-    def stepperMotorMove(self,port,distance):
-        deviceId = 62
+        deviceId = 61;
         extId = ((slot<<4)+deviceId)&0xff
         self.__doCallback(extId,callback)
-        self.__writePackage(bytearray([0xff,0x55,11,extId,0x2,deviceId,port,2]+self.short2bytes(speed)+self.long2bytes(distance)))
+        self.__writePackage(bytearray([0xff,0x55,0x06,extId,0x01,deviceId,0x00,slot,0x02]))
 
-    def stepperMotorMoveTo(self,port,position):
-        deviceId = 62
-        extId = ((slot<<4)+deviceId)&0xff
+    def stepperMotorRun(self,slot,speed):
+        deviceId = 76;
+        self.__writePackage(bytearray([0xff,0x55,0x07,0x00,0x02,deviceId,0x02,slot]+self.short2bytes(speed)))
+
+    def stepperMotorMove(self,port,speed,distance,callback):
+        deviceId = 76;
+        extId = ((port<<4)+deviceId)&0xff
         self.__doCallback(extId,callback)
-        self.__writePackage(bytearray([0xff,0x55,11,extId,0x2,deviceId,port,3]+self.short2bytes(speed)+self.long2bytes(position)))
+        self.__writePackage(bytearray([0xff,0x55,0x0b,extId,0x02,deviceId,0x01,port]+self.long2bytes(distance)+self.short2bytes(speed)))
+
+    def stepperMotorMoveTo(self,port,speed,distance,callback):
+        deviceId = 76;
+        extId = ((port<<4)+deviceId)&0xff
+        self.__doCallback(extId,callback)
+        self.__writePackage(bytearray([0xff,0x55,0x0b,extId,0x02,deviceId,0x06,port]+self.long2bytes(distance)+self.short2bytes(speed)))
+    
+    def stepperMotorSetCurPosZero(self,port):
+        deviceId = 76;
+        self.__writePackage(bytearray([0xff,0x55,0x05,0x00,0x02,deviceId,0x04,port]))
 
     def rgbledDisplay(self,port,slot,index,red,green,blue):
-        self.__writePackage(bytearray([0xff,0x55,0x9,0x0,0x2,8,port,slot,index,int(red),int(green),int(blue)]))
+        self.__writePackage(bytearray([0xff,0x55,0x9,0x0,0x2,0x8,port,slot,index,int(red),int(green),int(blue)]))
 
-# No use
     def rgbledShow(self,port,slot):
-        self.__writePackage(bytearray([0xff,0x55,0x5,0x0,0x2,8,port,slot,0]))
+        self.__writePackage(bytearray([0xff,0x55,0x5,0x0,0x2,19,port,slot]))
 
     def sevenSegmentDisplay(self,port,value):
         self.__writePackage(bytearray([0xff,0x55,0x8,0x0,0x2,9,port]+self.float2bytes(value)))
 
     def ledMatrixMessage(self,port,x,y,message):
-        arr = list(message)
+        arr = list(message);
         for i in range(len(arr)):
-            arr[i] = ord(arr[i])
+            arr[i] = ord(arr[i]);
         self.__writePackage(bytearray([0xff,0x55,8+len(arr),0,0x2,41,port,1,self.char2byte(x),self.char2byte(7-y),len(arr)]+arr))
 		
     def ledMatrixDisplay(self,port,x,y,buffer):
@@ -315,14 +327,16 @@ class MeAuriga():
     def readFloat(self, position):
         v = [self.buffer[position], self.buffer[position+1],self.buffer[position+2],self.buffer[position+3]]
         return struct.unpack('<f', struct.pack('4B', *v))[0]
+
     def readShort(self, position):
         v = [self.buffer[position], self.buffer[position+1]]
         return struct.unpack('<h', struct.pack('2B', *v))[0]
+
     def readString(self, position):
         l = self.buffer[position]
         position+=1
         s = ""
-        for i in Range(l):
+        for i in range(l):
             s += self.buffer[position+i].charAt(0)
         return s
     def readDouble(self, position):
@@ -345,12 +359,11 @@ class MeAuriga():
 
     def long2bytes(self,lval):
         val = struct.pack("=l",lval)
-        return [val[0],val[1],val[2]),val[3]]
+        return [ord(val[0]),ord(val[1]),ord(val[2]),ord(val[3])]
 
     def short2bytes(self,sval):
         val = struct.pack("h",sval)
-        return [val[0],val[1]]
-
+        return [ord(val[0]),ord(val[1])]
     def char2byte(self,cval):
         val = struct.pack("b",cval)
         return ord(val[0])

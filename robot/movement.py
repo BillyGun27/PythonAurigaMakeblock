@@ -11,3 +11,6 @@ def MoveLeft(bot):
 
 def MoveRight(bot):
     bot.motorMove(0,100)
+
+def Stop(bot):
+    bot.motorMove(0,0)
