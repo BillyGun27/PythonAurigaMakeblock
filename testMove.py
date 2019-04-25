@@ -1,5 +1,5 @@
 from robot.meauriga import *
-#from robotMegapi import *
+#from robotMegapi.megapi import *
 #import robot.movement as move
 
 

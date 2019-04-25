@@ -1,7 +1,10 @@
-from megapi import *
+#from robot.meauriga import *
+from robotMegapi.megapi import *
 
 if __name__ == '__main__':
+	#bot = MeAuriga()
 	bot = MegaPi()
+
 	bot.start()
 	bot.encoderMotorRun(4,0);
 	sleep(1);

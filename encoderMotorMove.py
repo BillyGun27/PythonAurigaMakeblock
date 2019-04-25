@@ -1,5 +1,5 @@
 from robot.meauriga import *
-#from robotMegapi import *
+#from robotMegapi.megapi import *
 
 def onForwardFinish(slot):
 	sleep(0.4)
