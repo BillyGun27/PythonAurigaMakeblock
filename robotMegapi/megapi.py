@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*
-
+#sudo rfcomm bind 0 00:1B:10:31:39:E7
 import sys
 
 if sys.version > '3':
