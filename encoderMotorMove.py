@@ -1,4 +1,4 @@
-from robotMegapi.megapi import *
+from robot.megapi import *
 
 def onRead1(level):
     print("Encoder1 motor speed Value:%f" %level)
@@ -22,8 +22,8 @@ def onBackwardFinish(slot):
 if __name__ == '__main__':
     bot = MegaPi()
     
-    #bot.start("/dev/ttyUSB0")
-    bot.start("/dev/rfcomm0")
+    bot.start("/dev/ttyUSB0")
+    #bot.start("/dev/rfcomm0")
     
     bot.encoderMotorRun(1,0)
     bot.encoderMotorRun(2,0)
