@@ -1,4 +1,4 @@
-from robotMegapi.megapi import *
+from robot.megapi import *
 
 def onRead(level):
     print("Encoder motor speed Value:%f" %level)

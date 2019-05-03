@@ -1,6 +1,6 @@
 from multiprocessing import freeze_support
 
-from robotMegapi.megapi import *
+from robot.megapi import *
 
 if __name__ == '__main__':
     freeze_support()

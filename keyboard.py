@@ -2,7 +2,7 @@
 
 # adapted from https://github.com/recantha/EduKit3-RC-Keyboard/blob/master/rc_keyboard.py
 
-from robotMegapi.megapi import *
+from robot.megapi import *
 import sys, termios, tty, os, time
 
 bot = MegaPi()
