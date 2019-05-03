@@ -1,4 +1,3 @@
-#from robot.meauriga import *
 from robotMegapi.megapi import *
 
 right = 1
@@ -15,8 +14,8 @@ def check(f):
 
 def onForwardFinish():
     sleep(0.4)
-    bot.encoderMotorMove(right,100, 1000 * -1,check)
-    bot.encoderMotorMove(left,100, 1000 ,check )
+    bot.encoderMotorMove(right,100, 720 * -1,check)
+    bot.encoderMotorMove(left,100, 720 ,check )
 
 def onRightFinish():
     sleep(0.4)
@@ -31,8 +30,8 @@ def onLeftFinish():
 def onBackwardFinish():
     sleep(0.4)
     print("slot")
-    bot.encoderMotorMove(right ,100, 360,check)
-    bot.encoderMotorMove(left,100, -360,check )
+    bot.encoderMotorMove(right ,100, 720,check)
+    bot.encoderMotorMove(left,100, -720,check )
 
 if __name__ == '__main__':
     #bot = MeAuriga()

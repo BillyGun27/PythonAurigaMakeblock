@@ -34,13 +34,13 @@ REQUIREMENTS = [
 ]
        
 setup(
-	name = 'meauriga',
-	version = '0.0.1',
+	name = 'megapi',
+	version = '0.2.2',
 	license = 'MIT',    
-	author = 'Pabi',                       
-	author_email = 'patrik.bichis@kreativadelar.se',
-	url = 'http://www.kreativadelar.se',
-	description = 'Python for Me Auriga',
+	author = 'ander,Mark,Vincent',                       
+	author_email = 'ander@makeblock.cc',
+	url = 'http://www.makeblock.com',
+	description = 'python for megapi',
 	long_description=LONG_DESCRIPTION,
 	packages=packages
 )

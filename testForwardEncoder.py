@@ -1,4 +1,3 @@
-#from robot.meauriga import *
 from robotMegapi.megapi import *
 
 right = 1

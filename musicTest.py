@@ -1,15 +1,14 @@
 from multiprocessing import freeze_support
 
-from robot.meauriga import *
-#from robotMegapi.megapi import *
+from robotMegapi.megapi import *
 
 if __name__ == '__main__':
     freeze_support()
-    bot = MeAuriga()
-    #bot = MegaPi()
+    
+    bot = MegaPi()
     #bot.start("/dev/ttyUSB0")
     bot.start("/dev/rfcomm0")
-    # bot.startWithHID()
+   
     while True:
         sleep(1);
         print("s")

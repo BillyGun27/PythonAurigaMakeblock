@@ -2,12 +2,8 @@
 
 # adapted from https://github.com/recantha/EduKit3-RC-Keyboard/blob/master/rc_keyboard.py
 
-#from lib.mBot import *
 from robotMegapi.megapi import *
 import sys, termios, tty, os, time
-
-#bot = mBot()
-#bot.startWithSerial("/dev/rfcomm0")
 
 bot = MegaPi()
 

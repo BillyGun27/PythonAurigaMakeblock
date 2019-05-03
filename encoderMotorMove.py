@@ -1,4 +1,3 @@
-#from robot.meauriga import *
 from robotMegapi.megapi import *
 
 def onRead1(level):
@@ -21,7 +20,6 @@ def onBackwardFinish(slot):
     bot.encoderMotorMove(slot,10,250,check )
 
 if __name__ == '__main__':
-    #bot = MeAuriga()
     bot = MegaPi()
     
     #bot.start("/dev/ttyUSB0")

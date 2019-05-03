@@ -1,8 +1,6 @@
-#from robot.meauriga import *
 from robotMegapi.megapi import *
 
 if __name__ == '__main__':
-    #bot = MeAuriga()
     bot = MegaPi()
 
     bot.start("/dev/ttyUSB0")

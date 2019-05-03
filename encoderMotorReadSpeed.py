@@ -1,11 +1,9 @@
-#from robot.meauriga import *
 from robotMegapi.megapi import *
 
 def onRead(level):
     print("Encoder motor speed Value:%f" %level)
 
 if __name__ == '__main__':
-    #bot = MeAuriga()
     bot = MegaPi()
     
     bot.start("/dev/ttyUSB0")

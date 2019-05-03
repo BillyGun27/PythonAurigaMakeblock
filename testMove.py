@@ -1,10 +1,8 @@
-#from robot.meauriga import *
 from robotMegapi.megapi import *
-#import robot.movement as move
+
 
 
 if __name__ == '__main__':
-    #bot = MeAuriga()
     bot = MegaPi()
     
     bot.start("/dev/ttyUSB0")
