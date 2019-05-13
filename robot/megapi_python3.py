@@ -242,10 +242,15 @@ class MegaPi():
         extId = ((slot<<4)+deviceId)&0xff
         return "callback_"+str(extId)
 
+    def encoderMotorPos(self,slot):
+        deviceId = 61
+        extId = ((slot<<4)+deviceId)&0xff
+        self.__writePackage(bytearray([0xff,0x55,0x06,extId,0x01,deviceId,0x00,slot,0x01]))
+
     def encoderMotorPosition(self,slot,callback):
         deviceId = 61
         extId = ((slot<<4)+deviceId)&0xff
-        #self.__doCallback(extId,callback)
+        self.__doCallback(extId,callback)
         self.__writePackage(bytearray([0xff,0x55,0x06,extId,0x01,deviceId,0x00,slot,0x01]))
 
     def encoderMotorSpeed(self,slot,callback):
