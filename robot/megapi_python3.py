@@ -74,7 +74,12 @@ class MegaPi():
         self.isParseStart = False
         self.exiting = False
         self.isParseStartIndex = 0
-
+        
+        self.keeper = {}
+        
+    def getKeeper(self):
+        return self.keeper
+    
     def __del__(self):
         self.exiting = True
 
@@ -94,19 +99,27 @@ class MegaPi():
     def exit(self, signal, frame):
         self.exiting = True
         sys.exit(0)
+        
+    def getDict(self):
+        seldict = self.__selectors["callback_93"]
+        return seldict
 
     def __onRead(self,callback):
         while True:
             if(self.exiting==True):
                 break
-            try:	
+            try:    
                 if self.device.isOpen()==True:
                     n = self.device.inWaiting()
+                    #if(n>0):
+                    #    print("n"+str(n))
                     for i in range(n):
                         r = ord(self.device.read())
+                     #   print("r"+str(r))
+                        
                         callback(r)
                     sleep(0.01)
-                else:	
+                else:   
                     sleep(0.5)
             except Exception as ex:
                 print(str(ex))
@@ -124,7 +137,7 @@ class MegaPi():
         self.__writeRequestPackage(0x1e,pin,callback)
 
     def analogRead(self,pin,callback):
-        self.__writeRequestPackage(0x1f,pin,callback)	
+        self.__writeRequestPackage(0x1f,pin,callback)   
 
     def lightSensorRead(self,port,callback):
         self.__writeRequestPackage(4,port,callback)
@@ -188,7 +201,7 @@ class MegaPi():
 
     def pressureSensorBegin(self):
         self.__writePackage(bytearray([0xff,0x55,0x3,0x0,0x2,29]))
-		
+        
     def pressureSensorRead(self,type,callback):
         self.__writeRequestPackage(29,type,callback)
 
@@ -273,7 +286,7 @@ class MegaPi():
         for i in range(len(arr)):
             arr[i] = ord(arr[i])
         self.__writePackage(bytearray([0xff,0x55,8+len(arr),0,0x2,41,port,1,self.char2byte(x),self.char2byte(7-y),len(arr)]+arr))
-		
+        
     def ledMatrixDisplay(self,port,x,y,buffer):
         self.__writePackage(bytearray([0xff,0x55,7+len(buffer),0,0x2,41,port,2,x,7-y]+buffer))
 
@@ -291,19 +304,24 @@ class MegaPi():
 
     def onParse(self, byte):
         position = 0
-        value = 0	
+        value = 0   
         self.buffer+=[byte]
         bufferLength = len(self.buffer)
+        #print(self.buffer)
+        #print("bl"+str(bufferLength))
         if bufferLength >= 2:
             if (self.buffer[bufferLength-1]==0x55 and self.buffer[bufferLength-2]==0xff):
                 self.isParseStart = True
-                self.isParseStartIndex = bufferLength-2	
-            if (self.buffer[bufferLength-1]==0xa and self.buffer[bufferLength-2]==0xd and self.isParseStart==True):			
+                self.isParseStartIndex = bufferLength-2 
+            if (self.buffer[bufferLength-1]==0xa and self.buffer[bufferLength-2]==0xd and self.isParseStart==True):         
                 self.isParseStart = False
                 position = self.isParseStartIndex+2
+                #print("pos"+str(position))
                 extID = self.buffer[position]
+                #print("extID"+str(extID))
                 position+=1
                 type = self.buffer[position]
+                #print("type"+str(type))
                 position+=1
                 # 1 byte 2 float 3 short 4 len+string 5 double
                 if type == 1:
@@ -348,6 +366,8 @@ class MegaPi():
         return struct.unpack('<l', struct.pack('4B', *v))[0]
 
     def responseValue(self, extID, value):
+        #print("rps"+str(value))
+        self.keeper["callback_"+str(extID)] = value
         self.__selectors["callback_"+str(extID)](value)
 
     def __doCallback(self, extID, callback):

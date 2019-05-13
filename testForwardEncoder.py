@@ -33,8 +33,8 @@ if __name__ == '__main__':
     #bot = MeAuriga()
     bot = MegaPi()
     
-    #bot.start("/dev/ttyUSB0")
-    bot.start("/dev/rfcomm0")
+    bot.start("/dev/ttyUSB0")
+    #bot.start("/dev/rfcomm0")
     
     bot.encoderMotorSetCurPosZero(1)
     bot.encoderMotorSetCurPosZero(2)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     onForwardFinish()
     #onBackwardFinish()
     
-    #while 1:
-    #    bot.encoderMotorPosition(1,onRead1)
-    #    bot.encoderMotorPosition(2,onRead2)
-    #    continue
+    while 1:
+        bot.encoderMotorPosition(1,onRead1)
+        bot.encoderMotorPosition(2,onRead2)
+        continue
