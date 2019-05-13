@@ -74,11 +74,6 @@ class MegaPi():
         self.isParseStart = False
         self.exiting = False
         self.isParseStartIndex = 0
-        
-        self.keeper = {}
-        
-    def getKeeper(self):
-        return self.keeper
     
     def __del__(self):
         self.exiting = True
@@ -107,12 +102,9 @@ class MegaPi():
             try:    
                 if self.device.isOpen()==True:
                     n = self.device.inWaiting()
-                    #if(n>0):
-                    #    print("n"+str(n))
+  
                     for i in range(n):
                         r = ord(self.device.read())
-                     #   print("r"+str(r))
-                        
                         callback(r)
                     sleep(0.01)
                 else:   
@@ -237,15 +229,10 @@ class MegaPi():
         deviceId = 62
         self.__writePackage(bytearray([0xff,0x55,0x05,0x00,0x02,deviceId,0x04,slot]))
 
-    def getextId(self,slot):
-        deviceId = 61
-        extId = ((slot<<4)+deviceId)&0xff
-        return "callback_"+str(extID)
-
     def encoderMotorPosition(self,slot,callback):
         deviceId = 61
         extId = ((slot<<4)+deviceId)&0xff
-        #self.__doCallback(extId,callback)
+        self.__doCallback(extId,callback)
         self.__writePackage(bytearray([0xff,0x55,0x06,extId,0x01,deviceId,0x00,slot,0x01]))
 
     def encoderMotorSpeed(self,slot,callback):
@@ -309,8 +296,6 @@ class MegaPi():
         value = 0   
         self.buffer+=[byte]
         bufferLength = len(self.buffer)
-        #print(self.buffer)
-        #print("bl"+str(bufferLength))
         if bufferLength >= 2:
             if (self.buffer[bufferLength-1]==0x55 and self.buffer[bufferLength-2]==0xff):
                 self.isParseStart = True
@@ -318,12 +303,9 @@ class MegaPi():
             if (self.buffer[bufferLength-1]==0xa and self.buffer[bufferLength-2]==0xd and self.isParseStart==True):         
                 self.isParseStart = False
                 position = self.isParseStartIndex+2
-                #print("pos"+str(position))
                 extID = self.buffer[position]
-                #print("extID"+str(extID))
                 position+=1
                 type = self.buffer[position]
-                #print("type"+str(type))
                 position+=1
                 # 1 byte 2 float 3 short 4 len+string 5 double
                 if type == 1:
@@ -370,7 +352,7 @@ class MegaPi():
 
     def responseValue(self, extID, value):
         self.keeper["callback_"+str(extID)] = value
-        #self.__selectors["callback_"+str(extID)](value)
+        self.__selectors["callback_"+str(extID)](value)
 
     def __doCallback(self, extID, callback):
         self.__selectors["callback_"+str(extID)] = callback

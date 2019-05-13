@@ -108,6 +108,11 @@ if __name__ == '__main__':
         bot.encoderMotorPosition(left,onReadAll)
         #print("d")
         print(bot.getKeeper())
+        encoderkey = bot.getKeeper()
+        print("right")
+        print(encoderkey[ bot.getextId(right) ])
+        print("left")
+        print(encoderkey[ bot.getextId(left) ])
         #print(deltaTickRight)
         sleep(0.5)
         
