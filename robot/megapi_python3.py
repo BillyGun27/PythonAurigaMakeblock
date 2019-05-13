@@ -112,6 +112,7 @@ class MegaPi():
                 print(str(ex))
                 self.close()
                 sleep(1)
+    
     def __writePackage(self,pack):
         self.device.writePackage(pack)
 
@@ -181,7 +182,7 @@ class MegaPi():
         self.__writeRequestPackage(22,port,callback)
 
     def gyroRead(self,port,axis,callback):
-        deviceId = 6;
+        deviceId = 6
         extId = (((port+axis)<<4)+deviceId)&0xff
         self.__doCallback(extId,callback)
         self.__writePackage(bytearray([0xff,0x55,0x5,extId,0x1,deviceId,port,axis]))
@@ -339,6 +340,7 @@ class MegaPi():
         for i in range(l):
             s += self.buffer[position+i].charAt(0)
         return s
+        
     def readDouble(self, position):
         v = [self.buffer[position], self.buffer[position+1],self.buffer[position+2],self.buffer[position+3]]
         return struct.unpack('<f', struct.pack('4B', *v))[0]
@@ -367,6 +369,7 @@ class MegaPi():
         val = struct.pack("h",sval)
         #return [ord(val[0]),ord(val[1])]
         return [val[0],val[1]]
+
     def char2byte(self,cval):
         val = struct.pack("b",cval)
         #return ord(val[0])
