@@ -7,17 +7,20 @@ def onRead2(level):
     print("Encoder2 motor speed Value:%f" %level)
     
 def check(f):
-    print(f)
+    print("f"+f)
+    
+def read():
+    print("f")
 
 def onForwardFinish(slot):
     sleep(0.4)
     print("no slot")
-    bot.encoderMotorMove(slot,10,180,check )
+    bot.encoderMotorMove(slot,100,1000,check )
 
 def onBackwardFinish(slot):
     sleep(0.4)
     print("slot")
-    bot.encoderMotorMove(slot,10,250,check )
+    bot.encoderMotorMove(slot,100,1000,onForwardFinish )
 
 if __name__ == '__main__':
     bot = MegaPi()
@@ -31,6 +34,6 @@ if __name__ == '__main__':
     onForwardFinish(2)
     
     while 1:
-        #bot.encoderMotorPosition(1,onRead1)
+        bot.encoderMotorPosition(1,onRead1)
         bot.encoderMotorPosition(2,onRead2)
-        continue
+   #     continue
