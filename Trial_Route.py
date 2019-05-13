@@ -4,6 +4,8 @@ right = 1
 left = 2
 
 deltaTickRight = 0
+def check(t):
+    print(t)
 
 def cmtotick(target):
     #fulltick 360
@@ -51,7 +53,7 @@ if __name__ == '__main__':
     print(tick)
 
     sleep(1)
-    onForwardFinish(20)
+    onForwardFinish(tick)
     #sleep(3)
     #onForwardFinish(20)
     
@@ -61,10 +63,10 @@ if __name__ == '__main__':
     
     #print("d")
     #print(bot.getBuffer())
-    s=0
+    command = False
     while True:
-        bot.encoderMotorPosition(right,onReadAll)
-        bot.encoderMotorPosition(left,onReadAll)
+        bot.encoderMotorPos(right)
+        bot.encoderMotorPos(left)
         print(bot.getKeeper())
         encoderkey = bot.getKeeper()
         #print(encoderkey.keys())
@@ -74,9 +76,10 @@ if __name__ == '__main__':
 
             print("right" + str(encRight))
             print("left" + str(encLeft))
-            if encLeft > (tick-20)
+            if encLeft > (tick-20) and not command:
                 print("change")
-                onBackwardFinish(20)
+                onBackwardFinish(tick)
+                command = True
             
         sleep(0.1)
         
