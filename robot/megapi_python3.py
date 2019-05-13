@@ -237,6 +237,7 @@ class MegaPi():
         deviceId = 62
         self.__writePackage(bytearray([0xff,0x55,0x05,0x00,0x02,deviceId,0x04,slot]))
 
+    ## Custom #############################################
     def getextId(self,slot):
         deviceId = 61
         extId = ((slot<<4)+deviceId)&0xff
@@ -246,6 +247,13 @@ class MegaPi():
         deviceId = 61
         extId = ((slot<<4)+deviceId)&0xff
         self.__writePackage(bytearray([0xff,0x55,0x06,extId,0x01,deviceId,0x00,slot,0x01]))
+
+    def encoderMotorMover(self,slot,speed,distance):
+        deviceId = 62
+        extId = ((slot<<4)+deviceId)&0xff
+        self.__writePackage(bytearray([0xff,0x55,0x0b,extId,0x02,deviceId,0x01,slot]+self.long2bytes(distance)+self.short2bytes(speed)))
+    
+    #############################################################
 
     def encoderMotorPosition(self,slot,callback):
         deviceId = 61
@@ -375,7 +383,7 @@ class MegaPi():
 
     def responseValue(self, extID, value):
         self.keeper["callback_"+str(extID)] = value
-        #self.__selectors["callback_"+str(extID)](value)
+        self.__selectors["callback_"+str(extID)](value)
 
     def __doCallback(self, extID, callback):
         self.__selectors["callback_"+str(extID)] = callback
