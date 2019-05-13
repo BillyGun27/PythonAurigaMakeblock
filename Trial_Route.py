@@ -99,22 +99,21 @@ if __name__ == '__main__':
     
     #print("d")
     #print(bot.getBuffer())
-    
-    while 1:
-        #if( deltaTickRight  >  ( 720 - 10 ) ):
-        #    print("next order")
-        #else :
+    s=0
+    while s<320:
         bot.encoderMotorPosition(right,onReadAll)
         bot.encoderMotorPosition(left,onReadAll)
-        #print("d")
         print(bot.getKeeper())
         encoderkey = bot.getKeeper()
-        print("right")
-        print(encoderkey[ bot.getextId(right) ])
-        print("left")
-        print(encoderkey[ bot.getextId(left) ])
-        #print(deltaTickRight)
-        sleep(0.5)
+        #print(encoderkey.keys())
+        if( len(encoderkey.keys()) ):
+            print("right")
+            print(encoderkey[ bot.getextId(right) ])
+            print("left")
+            print(encoderkey[ bot.getextId(left) ])
+            
+            s=encoderkey[ bot.getextId(left) ]
+        sleep(0.1)
         
         continue
 

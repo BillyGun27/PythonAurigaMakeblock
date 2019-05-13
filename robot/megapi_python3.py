@@ -240,7 +240,7 @@ class MegaPi():
     def getextId(self,slot):
         deviceId = 61
         extId = ((slot<<4)+deviceId)&0xff
-        return "callback_"+str(extID)
+        return "callback_"+str(extId)
 
     def encoderMotorPosition(self,slot,callback):
         deviceId = 61
