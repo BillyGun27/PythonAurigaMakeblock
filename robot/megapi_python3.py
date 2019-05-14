@@ -381,7 +381,7 @@ class MegaPi():
         v = [self.buffer[position], self.buffer[position+1],self.buffer[position+2],self.buffer[position+3]]
         return struct.unpack('<l', struct.pack('4B', *v))[0]
 
-    def responseValue(self, extID, value):
+    def responseValue(seiilf, extID, value):
         self.keeper["callback_"+str(extID)] = value
         self.__selectors["callback_"+str(extID)](value)
 

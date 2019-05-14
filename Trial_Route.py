@@ -47,7 +47,7 @@ if __name__ == '__main__':
     #bot.start("/dev/rfcomm0")
 
     commandDir=["forward","forward","backward"]
-    commandDist=[[40,40,40] #cm
+    commandDist=[40,40,40] #cm
 
     #bot.encoderMotorSetCurPosZero(right)
     #bot.encoderMotorSetCurPosZero(left)
