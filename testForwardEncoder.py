@@ -15,8 +15,8 @@ def check(f):
 def onForwardFinish():
     sleep(0.4)
     
-    bot.encoderMotorMove(right,100, 1000 * -1,check)
-    bot.encoderMotorMove(left,100, 1000 ,check )
+    bot.encoderMotorMove(right,100, 500 * -1,check)
+    bot.encoderMotorMove(left,100, 500 ,check )
     
     print("no slot")
     
@@ -26,8 +26,8 @@ def onForwardFinish():
 def onBackwardFinish():
     sleep(0.4)
     print("slot")
-    bot.encoderMotorMove(right ,100, 360,check)
-    bot.encoderMotorMove(left,100, -360,check )
+    bot.encoderMotorMove(right ,100, 500,check)
+    bot.encoderMotorMove(left,100, 500 * -1,check )
 
 if __name__ == '__main__':
     #bot = MeAuriga()
@@ -39,14 +39,15 @@ if __name__ == '__main__':
     bot.encoderMotorSetCurPosZero(1)
     bot.encoderMotorSetCurPosZero(2)
     
-    bot.encoderMotorRun(right ,0)#right
-    bot.encoderMotorRun(left ,0)#left
+    #bot.encoderMotorRun(right ,0)#right
+    #bot.encoderMotorRun(left ,0)#left
     
     sleep(1)
     onForwardFinish()
-    #onBackwardFinish()
+    
     
     while 1:
-        bot.encoderMotorPosition(1,onRead1)
-        bot.encoderMotorPosition(2,onRead2)
+        bot.encoderMotorPosition(right,onRead1)
+        bot.encoderMotorPosition(left,onRead2)
+        sleep(0.5)
         continue

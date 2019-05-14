@@ -5,7 +5,7 @@ def onForwardFinish(slot):
     bot.encoderMotorMove(slot,100,-1000,onBackwardFinish)
 
 def onBackwardFinish(slot):
-    sleep(0.4)
+    sleep(0.4);
     print("slot")
     bot.encoderMotorMove(slot,100,1000,onForwardFinish)
 
