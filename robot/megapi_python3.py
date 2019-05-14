@@ -375,7 +375,7 @@ class MegaPi():
 
     def responseValue(self, extID, value):
         self.keeper["callback_"+str(extID)] = value
-        #self.__selectors["callback_"+str(extID)](value)
+        self.__selectors["callback_"+str(extID)](value)
 
     def __doCallback(self, extID, callback):
         self.__selectors["callback_"+str(extID)] = callback
