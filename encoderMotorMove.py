@@ -1,26 +1,13 @@
 from robot.megapi import *
 
-def onRead1(level):
-    print("Encoder1 motor speed Value:%f" %level)
-        
-def onRead2(level):
-    print("Encoder2 motor speed Value:%f" %level)
-    
-def check(f):
-    print("f"+f)
-    
-def read():
-    print("f")
-
 def onForwardFinish(slot):
-    sleep(0.4)
-    print("no slot")
-    bot.encoderMotorMove(slot,100,1000,check )
+    sleep(0.4);
+    bot.encoderMotorMove(slot,100,-1000,onBackwardFinish);
 
 def onBackwardFinish(slot):
-    sleep(0.4)
+    sleep(0.4);
     print("slot")
-    bot.encoderMotorMove(slot,100,1000,onForwardFinish )
+    bot.encoderMotorMove(slot,100,1000,onForwardFinish);
 
 if __name__ == '__main__':
     bot = MegaPi()
@@ -28,12 +15,8 @@ if __name__ == '__main__':
     bot.start("/dev/ttyUSB0")
     #bot.start("/dev/rfcomm0")
     
-    bot.encoderMotorRun(1,0)
-    bot.encoderMotorRun(2,0)
-    sleep(1)
-    onForwardFinish(2)
-    
+    bot.encoderMotorRun(1,0);
+    sleep(1);
+    onForwardFinish(1);
     while 1:
-        bot.encoderMotorPosition(1,onRead1)
-        bot.encoderMotorPosition(2,onRead2)
-   #     continue
+        continue;
