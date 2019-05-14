@@ -46,8 +46,8 @@ if __name__ == '__main__':
     bot.start("/dev/ttyUSB0")
     #bot.start("/dev/rfcomm0")
 
-    commandDir=["forward","left","forward","backward","right"]
-    commandDist=[[40,0,40,40,0]
+    commandDir=["forward","forward","backward"]
+    commandDist=[[40,40,40] #cm
 
     #bot.encoderMotorSetCurPosZero(right)
     #bot.encoderMotorSetCurPosZero(left)
@@ -55,13 +55,12 @@ if __name__ == '__main__':
     #bot.encoderMotorRun(right ,0)#right
     #bot.encoderMotorRun(left ,0)#left
     
-    sleep(0.4)
-    target = 20 #cm
-    tick = cmtotick(target)
-    print(tick)
-
-    sleep(1)
-    onForwardFinish(tick)
+    sleep(0.5)
+   
+    i = 0
+    #targetTickRight = cmtotick(commandDist)
+    targetTick = cmtotick(commandDist[i])
+    onExecuteDir(commandDir[i],targetTick)
     
     lastTickRight = 0
     lastTickLeft = 0
@@ -73,17 +72,32 @@ if __name__ == '__main__':
         ###wait encoder value
         if( len(encodergroup.keys()) ):
             print(encodergroup)
-
+            
             encRight =  encoderkey[ bot.getextId(right) ]
             encLeft = encoderkey[ bot.getextId(left) ]
 
             #print("right" + str(encRight))
             #print("left" + str(encLeft))
-            if not command:
-                if encLeft-lastTickRight > (tick-20) and encRight   :
+           
+            deltaTickRight = encRight - lastTickRight
+            deltaTickLeft = encLeft - lastTickLeft
+            print("Right: Delta>{} Cur>{} Last>{}".format( deltaTickRight, encRight ,lastTickRight ))
+            print("Left: Delta>{} Cur>{} Last>{}".format( deltaTickLeft, encLeft ,lastTickLeft ))
+            print("Target:{}".format(targetTick) )
+            #Position Reached
+            if  ( abs(deltaTickRight)-20 ) < abs(targetTick) < ( abs(deltaTickRight)+20 ) 
+            and ( abs(deltaTickLeft)-20 ) < abs(targetTick) < ( abs(deltaTickLeft)+20 )    :
+                 if not command:
                     print("change")
-                    onBackwardFinish(tick)
+                    if i<len(commandDir):
+                        i+=1
+                    else:
+                        break 
+                    targetTick = cmtotick(commandDist[i])
+                    onExecuteDir(commandDir[i],targetTick)
                     command = True
+            elif command :
+                command = False
             
         sleep(0.1)
         
