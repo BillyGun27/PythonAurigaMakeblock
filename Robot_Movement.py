@@ -1,54 +1,13 @@
 from robot.megapi import *
+from robot.control import *
 
 right = 1
 left = 2
-
-#turn 28 cm
-class Command:
-    def __init__(self, direct, dist):
-        self.direct = direct
-        self.dist = dist
-        #fulltick 360
-        #r 3.25
-        self.tick = int( ( self.dist*360 ) // ( 2*3.14*3.25 ) )
-        if self.direct == "forward" :
-            self.tickR = self.tick * -1
-            self.tickL = self.tick 
-        elif self.direct == "backward" :
-            self.tickR = self.tick 
-            self.tickL = self.tick * -1
-        elif self.direct == "right" :
-            self.tickR = 0 
-            self.tickL = self.tick * 1
-        elif self.direct == "left" :
-            self.tickR = self.tick * -1
-            self.tickL = 0
-        elif self.direct == "rightb" :
-            self.tickR = 0 
-            self.tickL = self.tick * -1
-        elif self.direct == "leftb" :
-            self.tickR = self.tick * 1
-            self.tickL = 0
-
-    def toFinish(self):
-        print(self.tickR)
-        bot.encoderMotorMover( right, 100, self.tickR)
-        bot.encoderMotorMover( left, 100, self.tickL)
-    
-    def getDirect(self):
-        return self.direct
-    
-    def targetTickRight(self):
-        return self.tickR 
-
-    def targetTickLeft(self):
-        return self.tickL
 
 def back(level):
     level
     #print("Encoder motor speed Value:%f" %level)
     
-
 def EncoderGroup():
     bot.encoderMotorPosition(right,back)
     bot.encoderMotorPosition(left,back)
@@ -69,12 +28,19 @@ if __name__ == '__main__':
     sleep(0.1)
     
     commandKey=[]
-    commandKey.append(Command("forward",40))
-    commandKey.append(Command("backward",40))
-    commandKey.append(Command("right",28))
-    commandKey.append(Command("forward",40))
-    commandKey.append(Command("left",28))
-   
+    #commandKey.append(Command(bot,"right",56))
+    #commandKey.append(Command(bot,"rightb",56))
+    #commandKey.append(Command(bot,"left",56))
+    #commandKey.append(Command(bot,"leftb",56))
+    
+    commandKey.append(Command(bot,"forward",80))
+    commandKey.append(Command(bot,"left",28))
+    commandKey.append(Command(bot,"forward",40))
+    commandKey.append(Command(bot,"left",28))
+    commandKey.append(Command(bot,"forward",60))
+    commandKey.append(Command(bot,"left",28))
+    commandKey.append(Command(bot,"forward",40))
+    
     i = 0
     commandKey[i].toFinish()  
     sleep(1.5)
@@ -111,6 +77,7 @@ if __name__ == '__main__':
                     if i>=len(commandKey):
                         break
                     #print("i"+str(i))
+                    print(commandKey[i].getDirect())
                     commandKey[i].toFinish()
                     lastTickRight = encRight 
                     lastTickLeft = encLeft 
